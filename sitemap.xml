@@ -1,24 +1,519 @@
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+import { useState, useEffect } from 'react';
+import { Menu, X, Phone, Mail, ArrowUpRight, Hammer, Building2, Droplet, Home, Wrench, Shield, Clock, Award } from 'lucide-react';
+import Logo from './components/Logo';
+import AIChat from './components/AIChat';
+import ContactForm from './components/ContactForm';
 
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
+function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "include": ["src"]
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMenuOpen(false);
+    }
+  };
+
+  const services = [
+    {
+      icon: <Building2 className="w-8 h-8" />,
+      title: 'Apartment Maintenance',
+      description: 'Comprehensive maintenance solutions for apartment complexes and residential buildings.',
+      details: [
+        'Emergency repair services',
+        'Routine maintenance and inspections',
+        'Unit turnover services',
+        'Common area upkeep',
+        'HVAC system maintenance'
+      ],
+      image: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800'
+    },
+    {
+      icon: <Home className="w-8 h-8" />,
+      title: 'Hospitality Maintenance',
+      description: 'Expert maintenance services for hotels, motels, and extended stay properties.',
+      details: [
+        'Guest room maintenance',
+        'Facility upgrades',
+        'Quick response times',
+        'Minimal guest disruption',
+        'Quality assurance programs'
+      ],
+      image: 'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=800'
+    },
+    {
+      icon: <Hammer className="w-8 h-8" />,
+      title: 'Complete Remodeling',
+      description: 'Full-service renovation and remodeling to transform your spaces.',
+      details: [
+        'Kitchen and bathroom remodels',
+        'Flooring installation',
+        'Painting and finishing',
+        'Custom carpentry',
+        'Interior design consultation'
+      ],
+      image: 'https://images.pexels.com/photos/6474471/pexels-photo-6474471.jpeg?auto=compress&cs=tinysrgb&w=800'
+    },
+    {
+      icon: <Droplet className="w-8 h-8" />,
+      title: 'Drain & Plumbing',
+      description: 'Professional plumbing and drain cleaning services for all property types.',
+      details: [
+        'Emergency drain cleaning',
+        'Pipe repairs and replacement',
+        'Water heater services',
+        'Fixture installation',
+        'Preventive maintenance'
+      ],
+      image: '/vecteezy_water-draining-into-a-sink_69950409.jpg'
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-white text-gray-900">
+      {/* Hidden SEO Content */}
+      <div className="sr-only" aria-hidden="true">
+        <h1>LCR Remodeling - Licensed and Insured Apartment and Hotel Maintenance</h1>
+        <p>Professional apartment maintenance services, hotel maintenance, hospitality property maintenance, emergency plumbing, drain cleaning, complete remodeling services serving NJ, PA, NY, MD, VA, NC, FL, MA and expanding. Licensed insured contractor serving KRE Group, Harbor Group Properties, Extended Stay America, Homewood Suites, Inn House Suites. 24/7 emergency services available. Call 609-233-9233 or 609-212-6052. Expert HVAC maintenance, water heater repair, pipe repair, fixture installation, kitchen remodeling, bathroom remodeling, unit turnover services, property management contractor services.</p>
+      </div>
+      <div
+        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(20, 184, 166, 0.08), transparent 40%)`,
+        }}
+      />
+
+      <AIChat />
+
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white/80 backdrop-blur-xl shadow-sm border-b border-gray-100' : 'bg-transparent'
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="flex items-center justify-between h-24">
+            <div
+              className="flex items-center space-x-3 cursor-pointer group"
+              onClick={() => scrollToSection('home')}
+            >
+              <Logo size="md" className="transform group-hover:rotate-12 transition-transform duration-500" />
+              <div>
+                <span className="block text-2xl font-bold tracking-tight">LCR</span>
+                <span className="block text-xs tracking-widest text-gray-500 uppercase">Remodeling</span>
+              </div>
+            </div>
+
+            <div className="hidden md:flex items-center space-x-12">
+              {[
+                { id: 'services', label: 'Services' },
+                { id: 'work', label: 'Work' },
+                { id: 'about', label: 'About' },
+                { id: 'contact', label: 'Contact' }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="text-sm font-medium text-gray-600 hover:text-teal-600 transition-colors relative group"
+                >
+                  {item.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-600 group-hover:w-full transition-all duration-300" />
+                </button>
+              ))}
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="px-6 py-3 bg-gray-900 text-white text-sm font-medium hover:bg-teal-600 transition-all duration-300 rounded-full flex items-center space-x-2 group"
+              >
+                <span>Get Quote</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </button>
+            </div>
+
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+
+        {isMenuOpen && (
+          <div className="md:hidden bg-white border-t border-gray-100">
+            <div className="px-6 py-8 space-y-6">
+              {[
+                { id: 'services', label: 'Services' },
+                { id: 'work', label: 'Work' },
+                { id: 'about', label: 'About' },
+                { id: 'contact', label: 'Contact' }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="block w-full text-left text-lg font-medium text-gray-900 hover:text-teal-600 transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </nav>
+
+      <main>
+      <section id="home" className="relative min-h-screen flex items-center pt-24" itemScope itemType="https://schema.org/Service">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center space-x-2 mb-6 px-4 py-2 bg-teal-50 text-teal-700 text-sm font-medium rounded-full">
+                <Shield className="w-4 h-4" />
+                <span>Licensed & Insured • Est. 2020</span>
+              </div>
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-8 leading-none" itemProp="name">
+                Build
+                <br />
+                <span className="text-teal-600">Better</span>
+                <br />
+                Spaces
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-xl" itemProp="description">
+                Fully licensed and insured maintenance and remodeling services for apartments and hospitality properties.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => scrollToSection('contact')}
+                  className="px-8 py-4 bg-gray-900 text-white font-medium hover:bg-teal-600 transition-all duration-300 rounded-full flex items-center justify-center space-x-2 group"
+                >
+                  <span>Start Your Project</span>
+                  <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </button>
+                <button
+                  onClick={() => scrollToSection('services')}
+                  className="px-8 py-4 border-2 border-gray-900 text-gray-900 font-medium hover:bg-gray-900 hover:text-white transition-all duration-300 rounded-full"
+                >
+                  Our Services
+                </button>
+              </div>
+            </div>
+
+            <div className="relative hidden lg:block">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-500/20 to-cyan-500/20 rounded-3xl transform rotate-6" />
+                <div className="absolute inset-0 bg-gradient-to-br from-teal-600/10 to-cyan-600/10 rounded-3xl transform -rotate-6" />
+                <div className="relative bg-white border-2 border-gray-900 rounded-3xl p-12 space-y-8">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-4xl font-bold mb-1">6+</div>
+                      <div className="text-gray-600">Years Experience</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Building2 className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-4xl font-bold mb-1">3+</div>
+                      <div className="text-gray-600">Major Properties</div>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Shield className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-4xl font-bold mb-1">100%</div>
+                      <div className="text-gray-600">Quality Guaranteed</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      </main>
+
+      <section id="services" className="py-32 bg-gray-50" itemScope itemType="https://schema.org/ServiceCatalog">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-bold tracking-tighter mb-6">
+              Our Services
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Licensed and insured maintenance and renovation solutions tailored to your property's unique needs
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className="group bg-white border-2 border-gray-200 hover:border-teal-600 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl"
+              >
+                <div className="relative h-64 overflow-hidden">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-3 transform group-hover:scale-110 transition-transform">
+                      <div className="text-teal-600">{service.icon}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
+                  <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
+                  <ul className="space-y-2">
+                    {service.details.map((detail, idx) => (
+                      <li key={idx} className="flex items-center space-x-2 text-sm text-gray-600">
+                        <div className="w-1.5 h-1.5 bg-teal-600 rounded-full flex-shrink-0" />
+                        <span>{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="work" className="py-32" itemScope itemType="https://schema.org/ItemList">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-bold tracking-tighter mb-6">
+              Trusted By Leaders
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              We're proud to partner with premier property management companies
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                name: 'KRE Group',
+                type: 'Property Management',
+                color: 'teal'
+              },
+              {
+                name: 'Harbor Group Properties',
+                type: 'Property Management',
+                color: 'gray'
+              },
+              {
+                name: 'Extended Stay America',
+                type: 'Hospitality',
+                color: 'teal'
+              },
+              {
+                name: 'Homewood Suites',
+                type: 'Hospitality',
+                color: 'gray'
+              },
+              {
+                name: 'Inn House Suites',
+                type: 'Hospitality',
+                color: 'teal'
+              }
+            ].map((client, index) => (
+              <div
+                key={index}
+                className={`group relative overflow-hidden ${
+                  client.color === 'teal' ? 'bg-teal-600' : 'bg-gray-900'
+                } text-white p-12 rounded-2xl hover:scale-105 transition-all duration-300 cursor-pointer`}
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-500" />
+                <div className="relative">
+                  <div className="text-sm uppercase tracking-wider mb-4 opacity-80">{client.type}</div>
+                  <h3 className="text-2xl font-bold leading-tight">{client.name}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="py-32 bg-gray-50" itemScope itemType="https://schema.org/AboutPage">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="bg-white border-2 border-gray-900 rounded-3xl p-12">
+                <div className="space-y-8">
+                  <div>
+                    <div className="text-sm text-gray-500 mb-2 uppercase tracking-wider">Company</div>
+                    <div className="text-3xl font-bold">LCR Remodeling</div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-500 mb-2 uppercase tracking-wider">Established</div>
+                    <div className="text-3xl font-bold">2020</div>
+                  </div>
+                  <div>
+                    <div className="text-sm text-gray-500 mb-2 uppercase tracking-wider">Service Area</div>
+                    <div className="text-3xl font-bold">NJ, PA, NY, MD, VA, NC, FL, MA and expanding</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <h2 className="text-5xl md:text-6xl font-bold tracking-tighter mb-8">
+                Excellence in Every Detail
+              </h2>
+              <p className="text-xl text-gray-600 leading-relaxed mb-6">
+                Founded in 2020, LCR Remodeling has established itself as a fully licensed and insured partner for property maintenance and renovation.
+              </p>
+              <p className="text-xl text-gray-600 leading-relaxed mb-8">
+                We deliver exceptional service with unwavering commitment to quality and customer satisfaction. Every project is backed by comprehensive insurance coverage and proper licensing.
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: <Shield className="w-5 h-5" />, text: 'Licensed & Insured' },
+                  { icon: <Clock className="w-5 h-5" />, text: 'Fast Response' },
+                  { icon: <Award className="w-5 h-5" />, text: 'Quality Work' },
+                  { icon: <Wrench className="w-5 h-5" />, text: 'Expert Team' }
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center space-x-3 p-4 bg-white rounded-xl border border-gray-200">
+                    <div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center flex-shrink-0 text-white">
+                      {item.icon}
+                    </div>
+                    <span className="font-medium">{item.text}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="py-32" itemScope itemType="https://schema.org/ContactPage">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl md:text-6xl font-bold tracking-tighter mb-6">
+              Let's Work Together
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Ready to start your project? Get in touch for a free consultation
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 mb-16">
+            <ContactForm />
+
+            <div className="space-y-6">
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold mb-6">Direct Contact</h3>
+                <div className="space-y-4">
+                  <a
+                    href="tel:6092339233"
+                    className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-teal-50 transition-colors group"
+                    itemProp="telephone"
+                  >
+                    <div className="w-12 h-12 bg-teal-600 group-hover:bg-teal-700 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors">
+                      <Phone className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Primary Phone</div>
+                      <div className="text-lg font-semibold">(609) 233-9233</div>
+                    </div>
+                  </a>
+
+                  <a
+                    href="tel:6092126052"
+                    className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-teal-50 transition-colors group"
+                  >
+                    <div className="w-12 h-12 bg-gray-900 group-hover:bg-gray-800 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors">
+                      <Phone className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Secondary Phone</div>
+                      <div className="text-lg font-semibold">(609) 212-6052</div>
+                    </div>
+                  </a>
+
+                  <a
+                    href="mailto:service@lcrremodeling.com"
+                    className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl hover:bg-teal-50 transition-colors group"
+                    itemProp="email"
+                  >
+                    <div className="w-12 h-12 bg-teal-600 group-hover:bg-teal-700 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors">
+                      <Mail className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500">Email</div>
+                      <div className="text-lg font-semibold break-all">service@lcrremodeling.com</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-teal-600 to-teal-700 text-white rounded-2xl p-8">
+                <h3 className="text-2xl font-bold mb-4">Business Hours</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span>Monday - Friday</span>
+                    <span className="font-semibold">8:00 AM - 6:00 PM</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Saturday</span>
+                    <span className="font-semibold">9:00 AM - 4:00 PM</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Sunday</span>
+                    <span className="font-semibold">Emergency Only</span>
+                  </div>
+                </div>
+                <div className="mt-6 pt-6 border-t border-white/20">
+                  <p className="text-sm opacity-90">24/7 Emergency services available for urgent repairs</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-gray-200 py-12 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center space-x-3 mb-4 md:mb-0">
+              <Logo size="sm" />
+              <div>
+                <span className="block text-xl font-bold">LCR</span>
+                <span className="block text-xs tracking-widest text-gray-500 uppercase">Remodeling</span>
+              </div>
+            </div>
+            <p className="text-gray-500 text-sm">
+              © 2020 LCR Remodeling. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 }
+
+export default App;

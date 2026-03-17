@@ -1,4 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-VITE_SUPABASE_URL=https://llbfiqxvioauxjzjvlvi.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsYmZpcXh2aW9hdXhqemp2bHZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjcxNDMsImV4cCI6MjA4ODkwMzE0M30.kp7zUrzt3aYOrW244ATG6yobHhEpzPelHJSeEna4ARo
-RESEND_API_KEY=re_41vY89Cp_4qAiFMSz8mo2tcnvgvkQkAyW
+  <!-- Homepage -->
+  <url>
+    <loc>https://lcrremodeling.com/</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Services Section -->
+  <url>
+    <loc>https://lcrremodeling.com/#services</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Work Section -->
+  <url>
+    <loc>https://lcrremodeling.com/#work</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- About Section -->
+  <url>
+    <loc>https://lcrremodeling.com/#about</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Contact Section -->
+  <url>
+    <loc>https://lcrremodeling.com/#contact</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>

@@ -1,51 +1,43 @@
-/*
-  # Create Contact Submissions Table
+interface LogoProps {
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
 
-  1. New Tables
-    - `contact_submissions`
-      - `id` (uuid, primary key) - Unique identifier for each submission
-      - `name` (text) - Full name of the person submitting
-      - `email` (text) - Email address of the submitter
-      - `phone` (text) - Phone number of the submitter
-      - `property_type` (text) - Type of property (apartment, hotel, residential, commercial, other)
-      - `message` (text) - Project details and message
-      - `created_at` (timestamptz) - Timestamp when the submission was created
-      - `email_sent` (boolean) - Whether the notification email was sent successfully
-      
-  2. Security
-    - Enable RLS on `contact_submissions` table
-    - Add policy for service role to insert submissions
-    - Add policy for authenticated admin users to view submissions
-    
-  3. Important Notes
-    - This table stores all contact form submissions for record-keeping
-    - Email notifications will be sent via edge function
-    - Default values ensure data integrity
-*/
+export default function Logo({ className = '', size = 'md' }: LogoProps) {
+  const sizes = {
+    sm: 'w-8 h-8',
+    md: 'w-10 h-10',
+    lg: 'w-16 h-16'
+  };
 
-CREATE TABLE IF NOT EXISTS contact_submissions (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  name text NOT NULL,
-  email text NOT NULL,
-  phone text NOT NULL,
-  property_type text NOT NULL,
-  message text NOT NULL,
-  created_at timestamptz DEFAULT now(),
-  email_sent boolean DEFAULT false
-);
+  return (
+    <div className={`${sizes[size]} ${className}`}>
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#14b8a6" />
+            <stop offset="100%" stopColor="#0d9488" />
+          </linearGradient>
+        </defs>
 
-ALTER TABLE contact_submissions ENABLE ROW LEVEL SECURITY;
+        <rect x="20" y="20" width="60" height="60" rx="6" fill="url(#logoGradient)" />
 
--- Allow anyone to insert contact submissions (public form)
-CREATE POLICY "Anyone can submit contact form"
-  ON contact_submissions
-  FOR INSERT
-  TO anon, authenticated
-  WITH CHECK (true);
+        <path
+          d="M 35 35 L 35 65 M 35 65 L 48 65"
+          stroke="white"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
 
--- Only authenticated users can view submissions (for admin purposes)
-CREATE POLICY "Authenticated users can view submissions"
-  ON contact_submissions
-  FOR SELECT
-  TO authenticated
-  USING (true);
+        <path
+          d="M 55 45 L 62 38 L 69 45 M 55 55 L 62 48 L 69 55 M 55 65 L 62 58 L 69 65"
+          stroke="white"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  );
+}
